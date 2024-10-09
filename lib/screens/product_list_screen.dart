@@ -1,10 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:product_manage_app/screens/add_product_screen.dart';
 import 'package:product_manage_app/screens/edit_product_screen.dart';
+import 'package:product_manage_app/screens/login_screen.dart';
+import 'package:product_manage_app/services/auth_service.dart';
 import 'package:product_manage_app/services/product_service.dart';
 
 class ProductListScreen extends StatelessWidget {
+  User? user = FirebaseAuth.instance.currentUser;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,16 +17,19 @@ class ProductListScreen extends StatelessWidget {
         title: Text('Product List'),
         actions: [
           IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AddProductScreen()));
-            },
-          ),
+              onPressed: () async {
+                await AuthService().signOut();
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()));
+              },
+              icon: Icon(Icons.exit_to_app)),
         ],
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('products').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('products')
+            .where('uid', isEqualTo: user!.uid)
+            .snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
@@ -55,6 +63,13 @@ class ProductListScreen extends StatelessWidget {
           );
         },
       ),
+      floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.white,
+          child: Icon(Icons.add),
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => AddProductScreen()));
+          }),
     );
   }
 }

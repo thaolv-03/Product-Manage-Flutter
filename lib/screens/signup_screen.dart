@@ -1,19 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:product_manage_app/screens/login_screen.dart';
 import 'package:product_manage_app/screens/product_list_screen.dart';
-import 'package:product_manage_app/screens/signup_screen.dart';
 import 'package:product_manage_app/services/auth_service.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
-
-  @override
-  _LoginScreenState createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
+class SignupScreen extends StatelessWidget {
+  final AuthService _auth = AuthService();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  String errorMessage = '';
+  final TextEditingController _passController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +16,7 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: AppBar(
         backgroundColor: Color(0xFF1d2630),
         foregroundColor: Colors.white,
-        title: Text("Sign In"),
+        title: Text("Create Account"),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -31,7 +25,16 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               SizedBox(height: 50),
               Text(
-                "Login Here",
+                "Welcome",
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(height: 5),
+              Text(
+                "Register Here",
                 style: TextStyle(
                   fontSize: 18,
                   // fontWeight: FontWeight.w500,
@@ -56,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               SizedBox(height: 20),
               TextField(
-                controller: _passwordController,
+                controller: _passController,
                 style: TextStyle(color: Colors.white),
                 obscureText: true,
                 decoration: InputDecoration(
@@ -76,25 +79,22 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 55,
                 width: MediaQuery.of(context).size.width / 1.5,
                 child: ElevatedButton(
-                  onPressed: () async {
-                    final email = _emailController.text;
-                    final password = _passwordController.text;
-                    final user = await AuthService().signIn(email, password);
-                    if (user != null) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProductListScreen()));
-                    } else {
-                      setState(() {
-                        errorMessage = 'Login failed';
-                      });
-                    }
-                  },
-                  child: Text('Login'),
-                ),
+                    onPressed: () async {
+                      User? user = await _auth.registerWithEmailAndPassword(
+                          _emailController.text, _passController.text);
+
+                      if (user != null) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProductListScreen()));
+                      }
+                    },
+                    child: Text(
+                      "Register",
+                      style: TextStyle(color: Colors.indigo, fontSize: 18),
+                    )),
               ),
-              SizedBox(height: 20),
               SizedBox(height: 20),
               Text(
                 "OR",
@@ -106,11 +106,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SignupScreen(),
+                          builder: (context) => LoginScreen(),
                         ));
                   },
                   child: Text(
-                    "Create Account",
+                    "Log In",
                     style: TextStyle(fontSize: 18),
                   ))
             ],

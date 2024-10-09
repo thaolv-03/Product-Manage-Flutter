@@ -1,11 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ProductService {
   final CollectionReference products =
       FirebaseFirestore.instance.collection('products');
-  Future<void> addProduct(
+
+  User? user = FirebaseAuth.instance.currentUser;
+  Future<DocumentReference> addProduct(
       String name, String category, double price, String imageUrl) async {
-    await products.add({
+    return await products.add({
+      'uid': user!.uid,
       'name': name,
       'category': category,
       'price': price,
