@@ -1,16 +1,7 @@
 # product_manage_app
 
-A new Flutter project.
+Lê Văn Thảo - 21IT313 - Giữa kì Lập trình Đa nền tảng
 
-## Getting Started
+Link demo: https://drive.google.com/drive/folders/1VEdHHQxZHTXoh2xVj5jYOE1mNv2QXBVs?usp=sharing
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
