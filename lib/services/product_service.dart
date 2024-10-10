@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:product_manage_app/services/storage_service.dart';
 
 class ProductService {
   final CollectionReference products =
@@ -24,5 +25,6 @@ class ProductService {
 
   Future<void> deleteProduct(String productId, String imageUrl) async {
     await products.doc(productId).delete();
+    await StorageService().deleteImage(imageUrl);
   }
 }

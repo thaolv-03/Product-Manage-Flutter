@@ -20,7 +20,8 @@ class StorageService {
       rethrow;
     }
   }
-
+  
+  // Chức năng chưa làm
   Future<void> deleteImage(String imageUrl) async {
     try {
       // Chuyển đổi URL thành Reference
